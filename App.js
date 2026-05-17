@@ -97,6 +97,7 @@ function HomeScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Search for a country..."
+        placeholderTextColor={COLORS.sandDark}
         onChangeText={handleSearch}
       />
 
@@ -169,70 +170,114 @@ export default function App() {
   );
 }
 
-// ESTILOS MODIFICADOS
+export const COLORS = {
+  bgPrimary:   '#3B153A',   // fondo principal
+  bgDeep:      '#2a0f29',   // header
+  bgCard:      'rgba(255,255,255,0.06)', // tarjetas
+  bgMid:       '#5a2659',   // inputs
+ 
+  sand:        '#F0C987',   // texto principal e iconos
+  sandDark:    '#d4a85a',   // texto secundario
+  sandSubtle:  'rgba(240,201,135,0.15)', // fondos secundarios
+ 
+  border:      'rgba(240,201,135,0.15)', //bordes
+  borderHover: 'rgba(240,201,135,0.3)',
+ 
+  white:       '#ffffff', 
+  error:       '#f28b82',
+};
+
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#fff', 
-    paddingHorizontal: 10 
+
+// Contenedor principal
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.bgPrimary,
+    paddingHorizontal: 12,
   },
-  input: { 
-    height: 45, 
-    borderColor: '#ccc', 
-    borderWidth: 1, 
-    paddingHorizontal: 15, 
-    borderRadius: 8, 
-    marginBottom: 10, 
-    marginTop: 10,
-    backgroundColor: '#f9f9f9'
+ 
+  // Buscador
+  input: {
+    height: 46,
+    backgroundColor: COLORS.bgMid,
+    borderColor: COLORS.border,
+    borderWidth: 1,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    marginBottom: 12,
+    marginTop: 12,
+    color: COLORS.sand,
+    fontSize: 14,
   },
+ 
+  // Fila de regiones
   regionContainer: {
     height: 40,
-    marginBottom: 15,
+    marginBottom: 16,
   },
+
   regionButton: {
-    backgroundColor: '#eee',
+    backgroundColor: COLORS.bgMid,
+    borderColor: COLORS.border,
+    borderWidth: 1,
     paddingHorizontal: 16,
     borderRadius: 20,
     marginRight: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 35,
+    height: 34,
   },
+
   activeRegionButton: {
-    backgroundColor: '#007AFF', // Azul cuando se selecciona
+    backgroundColor: COLORS.sand,
+    borderColor: 'transparent',
   },
+
   regionText: {
-    color: '#333',
+    color: COLORS.sandDark,
     fontWeight: '500',
+    fontSize: 13,
   },
+
   activeRegionText: {
-    color: '#fff', // Texto blanco si está seleccionado
+    color: COLORS.bgPrimary,
     fontWeight: 'bold',
+    fontSize: 13,
   },
-  listContainer: { 
-    flex: 1 
+ 
+  // Lista
+  listContainer: {
+    flex: 1,
   },
-  card: { 
-    padding: 15, 
-    borderBottomWidth: 1, 
-    borderBottomColor: '#eee',
-    backgroundColor: '#fff'
+ 
+  // Tarjeta de país
+  card: {
+    padding: 15,
+    marginBottom: 10,
+    borderRadius: 10,
+    backgroundColor: COLORS.bgCard,
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
-  countryName: { 
-    fontWeight: 'bold', 
+
+  countryName: {
+    fontWeight: 'bold',
     fontSize: 16,
-    color: '#111'
+    color: COLORS.sand,
+    marginBottom: 4,
   },
+
   countrySub: {
-    color: '#666',
+    color: COLORS.sandDark,
     fontSize: 14,
-    marginTop: 2
+    marginTop: 3,
+  }, 
+  
+  // Mensajes
+  errorText: {
+    textAlign: 'center',
+    marginTop: 30,
+    color: COLORS.error,
+    fontSize: 15,
   },
-  errorText: { 
-    textAlign: 'center', 
-    marginTop: 20, 
-    color: 'red',
-    fontSize: 16
-  }
 });

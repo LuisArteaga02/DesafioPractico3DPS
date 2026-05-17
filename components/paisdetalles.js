@@ -137,11 +137,11 @@ const CountryDetails = ({ route, navigation }) => {
 
                                 {/* Detalles secundarios agrupados de forma segura */}
                                 <View style={styles.weatherDetailsContainer}>
-                                    <Text style={styles.weatherSubInfo}>
-                                        💧 Humidity: <Text style={styles.bold}>{weather.relative_humidity_2m}%</Text>
+                                    <Text style={styles.weatherMeta}>
+                                        💧 Humidity: <Text style={styles.weatherMetaValue}>{weather.relative_humidity_2m}%</Text>
                                     </Text>
-                                    <Text style={styles.weatherSubInfo}>
-                                        💨 Wind: <Text style={styles.bold}>{weather.wind_speed_10m} km/h</Text>
+                                    <Text style={styles.weatherMeta}>
+                                        💨 Wind: <Text style={styles.weatherMetaValue}>{weather.wind_speed_10m} km/h</Text>
                                     </Text>
                                 </View>
                             </View>
@@ -220,112 +220,206 @@ const CountryDetails = ({ route, navigation }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        padding: 20,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    backButton: {
-        backgroundColor: "#eee",
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderRadius: 5,
-        alignSelf: "flex-start",
-        marginBottom: 20,
-        marginTop: 20,
-    },
-    backButtonText: {
-        fontWeight: "600",
-    },
-    body: {
-        alignItems: "center",
-    },
-    flag: {
-        width: "100%",
-        height: 200,
-        borderRadius: 8,
-        marginBottom: 20,
-    },
-    contentContainer: {
-        width: "100%",
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        marginBottom: 10,
-    },
-    weatherCard: {
-        backgroundColor: "#e3f2fd",
-        padding: 15,
-        borderRadius: 10,
-        marginBottom: 20,
-        borderWidth: 1,
-        borderColor: "#bbdefb",
-    },
-    weatherTitle: {
-        fontSize: 14,
-        color: "#1565c0",
-        fontWeight: "bold",
-        marginBottom: 5,
-    },
-    weatherTemp: {
-        fontSize: 32,
-        fontWeight: "bold",
-        color: "#0d47a1",
-    },
-    infoSection: {
-        marginBottom: 20,
-    },
-    infoText: {
-        fontSize: 16,
-        marginBottom: 8,
-        color: "#333",
-    },
-    bold: {
-        fontWeight: "bold",
-        color: "#000",
-    },
-    bordersSection: {
-        marginTop: 10,
-        marginBottom: 40,
-    },
-    borderBadgesContainer: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginTop: 5,
-    },
-    borderBadge: {
-        backgroundColor: "#f0f0f0",
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 4,
-        marginRight: 8,
-        marginBottom: 8,
-        borderWidth: 1,
-        borderColor: "#ddd",
-    },
-    borderBadgeText: {
-        fontSize: 14,
-        fontWeight: "600",
-    },
-    mapContainer: {
-        width: '100%',
-        height: 250,
-        borderRadius: 10,
-        overflow: 'hidden',
-        marginBottom: 20,
-    },
-    map: {
-        width: '100%',
-        height: '100%',
-    },
+const COLORS = {
+  bgPrimary:  '#3B153A',
+  bgDeep:     '#2a0f29',
+  bgCard:     'rgba(255,255,255,0.06)',
+  bgMid:      '#5a2659',
+  bgWeather:  'rgba(240,201,135,0.10)',
+ 
+  sand:       '#F0C987',
+  sandDark:   '#d4a85a',
+  sandSubtle: 'rgba(240,201,135,0.15)',
+ 
+  border:     'rgba(240,201,135,0.15)',
+  borderMid:  'rgba(240,201,135,0.25)',
+ 
+  white:      '#ffffff',
+  error:      '#f28b82',
+  mapBg:      '#1e3a2a', 
+};
 
+const styles = StyleSheet.create({
+ // Contenedor raíz
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.bgPrimary,
+    padding: 16,
+  },
+ 
+  // Pantalla de carga
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.bgPrimary,
+  },
+
+  loadingText: {
+    marginTop: 12,
+    color: COLORS.sandDark,
+    fontSize: 14,
+  },
+ 
+  // Botón volver
+  backButton: {
+    backgroundColor: COLORS.sandSubtle,
+    borderColor: COLORS.border,
+    borderWidth: 1,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    marginBottom: 20,
+    marginTop: 8,
+  },
+
+  backButtonText: {
+    fontWeight: '600',
+    color: COLORS.sand,
+    fontSize: 14,
+  },
+ 
+  // Centrar cuerpo
+  body: {
+    alignItems: 'center',
+  },
+ 
+  // Bandera
+  flag: {
+    width: '100%',
+    height: 190,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+ 
+  // Contenido
+  contentContainer: {
+    width: '100%',
+  },
+ 
+  // Nombre del país
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: COLORS.sand,
+    marginBottom: 4,
+  },
+
+  subtitle: {
+    fontSize: 13,
+    color: COLORS.sandDark,
+    marginBottom: 16,
+  },
+  
+  // Tarjeta clima
+  weatherCard: {
+    backgroundColor: COLORS.bgWeather,
+    borderWidth: 1,
+    borderColor: COLORS.borderMid,
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+
+  weatherTitle: {
+    fontSize: 14,
+    color: COLORS.sand,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+
+  weatherTemp: {
+    fontSize: 34,
+    fontWeight: 'bold',
+    color: COLORS.sand,
+    marginBottom: 6,
+  },
+
+  weatherMeta: {
+    fontSize: 13,
+    color: COLORS.sandDark,  
+    marginTop: 2,
+  },
+
+  weatherMetaValue: {
+    fontWeight: 'bold',
+    color: COLORS.sand,
+  },
+ 
+  // Seccion de info
+
+  infoSection: {
+    marginBottom: 20,
+  },
+
+  infoText: {
+    fontSize: 15,
+    marginBottom: 10,
+    color: COLORS.sandDark,
+    paddingBottom: 8,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.border,
+    paddingBottom: 8,
+  },
+
+  bold: {
+    fontWeight: 'bold',
+    color: COLORS.sand,
+  },
+ 
+  // Bordes
+  bordersSection: {
+    marginTop: 4,
+    marginBottom: 24,
+  },
+
+  borderBadgesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8,
+  },
+
+  borderBadge: {
+    backgroundColor: COLORS.bgMid,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+
+  borderBadgeText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: COLORS.sand,
+  },
+ 
+  // Mapa
+  mapContainer: {
+    width: '100%',
+    height: 220,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+ 
+  // Error genérico
+  errorText: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: COLORS.error,
+    fontSize: 15,
+  },
 });
 
 export default CountryDetails;
