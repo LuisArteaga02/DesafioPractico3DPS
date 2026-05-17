@@ -8,7 +8,7 @@ import {
     ScrollView,
     ActivityIndicator
 } from "react-native";
-import MapView, {Marker} from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 const CountryDetails = ({ route, navigation }) => {
     const { countryName } = route?.params || { countryName: "Canada" };
 
@@ -62,18 +62,25 @@ const CountryDetails = ({ route, navigation }) => {
                     // 2. Petición a Open-Meteo si existen las coordenadas
                     if (lat !== null && lon !== null) {
                         // Usamos current_weather=true para obtener el clima actual directo y más simple
-                        const weatherResponse = await fetch(
-                            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
-                        );
-                        const weatherData = await weatherResponse.json();
+                       
+                       const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m`;
+                        
 
-                        if (weatherData && weatherData.current_weather) {
-                            setWeather(weatherData.current_weather.temperature);
+                       const weatherResponse = await fetch(weatherApiUrl);
+                    const weatherData = await weatherResponse.json();
+                        
+                        if (weatherData && weatherData.current) {
+                            setWeather({
+                            temperature_2m: weatherData.current.temperature_2m,
+                            relative_humidity_2m: weatherData.current.relative_humidity_2m,
+                            wind_speed_10m: weatherData.current.wind_speed_10m
+                            });
+                           
                         }
                     }
                 }
             } catch (error) {
-                console.error("Error cargando los datos:", error);
+                console.error("Error critico", error);
             } finally {
                 setLoading(false);
             }
@@ -121,13 +128,28 @@ const CountryDetails = ({ route, navigation }) => {
                     {/* SECCIÓN DEL CLIMA EN TIEMPO REAL */}
                     <View style={styles.weatherCard}>
                         <Text style={styles.weatherTitle}>☀️ Real-time Weather</Text>
-                        {weather !== null ? (
-                            <Text style={styles.weatherTemp}>{weather}°C</Text>
+
+                        {/* 1. Validamos que 'weather' no sea null y que tenga datos adentro */}
+                        {weather && weather.temperature_2m !== undefined ? (
+                            <View>
+                                {/* Temperatura Principal */}
+                                <Text style={styles.weatherTemp}>{weather.temperature_2m}°C</Text>
+
+                                {/* Detalles secundarios agrupados de forma segura */}
+                                <View style={styles.weatherDetailsContainer}>
+                                    <Text style={styles.weatherSubInfo}>
+                                        💧 Humidity: <Text style={styles.bold}>{weather.relative_humidity_2m}%</Text>
+                                    </Text>
+                                    <Text style={styles.weatherSubInfo}>
+                                        💨 Wind: <Text style={styles.bold}>{weather.wind_speed_10m} km/h</Text>
+                                    </Text>
+                                </View>
+                            </View>
                         ) : (
-                            <Text style={styles.infoText}>Weather details unavailable</Text>
+                            /* 2. Mientras 'weather' sea null, se muestra este texto de carga */
+                            <Text style={styles.infoText}>Loading weather data...</Text>
                         )}
                     </View>
-
                     <View style={styles.infoSection}>
                         <Text style={styles.infoText}>Official Name: <Text style={styles.bold}>{country.official}</Text></Text>
                         <Text style={styles.infoText}>Population: <Text style={styles.bold}>{country.population.toLocaleString()}</Text></Text>
@@ -179,7 +201,7 @@ const CountryDetails = ({ route, navigation }) => {
                                 region={{
                                     latitude: country.latitud,
                                     longitude: country.longitud,
-                                    latitudeDelta: 12.0, 
+                                    latitudeDelta: 12.0,
                                     longitudeDelta: 12.0,
                                 }}
                             >
@@ -293,16 +315,16 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     mapContainer: {
-    width: '100%',
-    height: 250,
-    borderRadius: 10,
-    overflow: 'hidden',
-    marginBottom: 20,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
+        width: '100%',
+        height: 250,
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginBottom: 20,
+    },
+    map: {
+        width: '100%',
+        height: '100%',
+    },
 
 });
 
