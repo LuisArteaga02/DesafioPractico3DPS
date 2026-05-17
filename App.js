@@ -103,7 +103,7 @@ function HomeScreen({ navigation }) {
       {/* 2. Barra de Regiones Horizontal */}
       <View style={styles.regionContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {["All", "Asia", "Africa", "Americas", "Europe", "Oceania"].map((region) => (
+          {[ "Asia", "Africa", "Americas", "Europe", "Oceania"].map((region) => (
             <TouchableOpacity 
               key={region} 
               style={[
