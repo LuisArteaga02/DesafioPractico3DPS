@@ -8,7 +8,7 @@ import {
     ScrollView,
     ActivityIndicator
 } from "react-native";
-
+import MapView, {Marker} from "react-native-maps";
 const CountryDetails = ({ route, navigation }) => {
     const { countryName } = route?.params || { countryName: "Canada" };
 
@@ -30,7 +30,7 @@ const CountryDetails = ({ route, navigation }) => {
     });
 
     const countryUrl = "https://restcountries.com/v3.1/name/";
-  
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -66,7 +66,7 @@ const CountryDetails = ({ route, navigation }) => {
                             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
                         );
                         const weatherData = await weatherResponse.json();
-                        
+
                         if (weatherData && weatherData.current_weather) {
                             setWeather(weatherData.current_weather.temperature);
                         }
@@ -172,6 +172,25 @@ const CountryDetails = ({ route, navigation }) => {
                             )}
                         </View>
                     </View>
+                    {country.latitud !== "N/A" && country.longitud !== "N/A" ? (
+                        <View style={styles.mapContainer}>
+                            <MapView
+                                style={styles.map}
+                                region={{
+                                    latitude: country.latitud,
+                                    longitude: country.longitud,
+                                    latitudeDelta: 12.0, 
+                                    longitudeDelta: 12.0,
+                                }}
+                            >
+                                {/* Coloca un pin en el centro del país */}
+                                <Marker
+                                    coordinate={{ latitude: country.latitud, longitude: country.longitud }}
+                                    title={country.name}
+                                />
+                            </MapView>
+                        </View>
+                    ) : null}
 
                 </View>
             </View>
@@ -273,6 +292,18 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "600",
     },
+    mapContainer: {
+    width: '100%',
+    height: 250,
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginBottom: 20,
+  },
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+
 });
 
 export default CountryDetails;
